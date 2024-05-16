@@ -6,15 +6,25 @@ from django.contrib.auth import get_user_model
 EXISITING_EMAIL_ERROR = "Email already exist"
 
 class UserListSerializer(serializers.ModelSerializer):
- 
+
     class Meta:
         model = get_user_model()
-        fields = "__all__"
+        fields = [
+            "id",
+            "email",
+            "password",
+            "firstname",
+            "lastname",
+            "created_at",
+            "updated_at",
+            "is_active",
+        ]
 
 
 class UserSignUpSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     password = serializers.CharField(min_length=8, write_only=True, required=True)
+    is_active = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = get_user_model()
@@ -50,6 +60,25 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         return user
 
 
-class LoginUserSerializer(serializers.Serializer):
-    email = serializers.EmailField(required=True)
-    password = serializers.CharField(required=True)
+class CustomTokenSerializer(serializers.Serializer):
+    access = serializers.CharField()
+    refresh = serializers.CharField()
+
+class LoginUserSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True,write_only=True)
+    password = serializers.CharField(
+        required=True,
+        write_only=True,
+    )
+    tokens = CustomTokenSerializer(read_only=True)
+    user_data = UserListSerializer(read_only=True)
+
+    class Meta:
+        model = get_user_model()
+        fields = [
+            "tokens",
+            "email",
+            "password",
+            "user_data",
+        ]
+        
