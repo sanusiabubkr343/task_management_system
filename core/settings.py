@@ -33,6 +33,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "user",
+    # third-party-apps
+    "rest_framework",
+    "corsheaders",
+    'drf_spectacular',
+    "debug_toolbar",
 ]
 
 
@@ -60,7 +65,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated"),
-    "DEFAULT_PAGINATION_CLASS": "simpleblog.pagination.CustomPagination",
+    "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPagination",
     "PAGE_SIZE": 10,
 }
 
@@ -121,6 +126,7 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
 
 DATABASES["default"] = dj_database_url.parse(config("DATABASE_URL"))
 
