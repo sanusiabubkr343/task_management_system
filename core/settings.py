@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "user",
 ]
 
 
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
+AUTH_USER_MODEL = "user.User"
 ROOT_URLCONF = "core.urls"
 CORS_ALLOW_ALL_ORIGINS = True
 SRF_TRUSTED_ORIGINS = []
