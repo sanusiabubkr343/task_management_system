@@ -12,7 +12,7 @@ django-filter
 pytest
 pytest-django
 factory-boy
-mock
+pytest-mock
 Faker
 django-cloudinary-storage
 cloudinary
