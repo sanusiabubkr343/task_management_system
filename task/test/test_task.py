@@ -9,6 +9,8 @@ from user.test.factories import UserFactory
 
 task_list_url = "task:task-list"
 task_detail_url = "task:task-detail"
+set_complete_task = "task:task-set-task-completed"
+set_pending_task = "task:task-set-task-pending"
 
 
 class TestTaskCategories:
@@ -123,3 +125,26 @@ class TestTaskCategories:
         url = reverse(task_detail_url, kwargs={"pk": task.id})
         response = api_client.delete(url)
         assert response.status_code == 401
+
+    def test_set_task_completed(self, mocked_authentication, api_client):
+        """Test setting a task completed"""
+        user = UserFactory()
+        auth_user = mocked_authentication(active_user=user)
+        task = TaskFactory.create(user=auth_user,is_completed=False)
+        url = reverse(set_complete_task, kwargs={"pk": task.id})
+        response = api_client.post(url)
+        task.refresh_from_db()
+        assert response.status_code == 200
+        assert task.is_completed == True
+    
+
+    def test_set_task_pending(self, mocked_authentication, api_client):
+        """Test setting a task pending"""
+        user = UserFactory()
+        auth_user = mocked_authentication(active_user=user)
+        task = TaskFactory.create(user=auth_user,is_completed=True)
+        url = reverse(set_pending_task, kwargs={"pk": task.id})
+        response = api_client.post(url)
+        task.refresh_from_db()
+        assert response.status_code == 200
+        assert task.is_completed == False
