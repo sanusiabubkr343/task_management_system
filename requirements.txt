@@ -19,6 +19,7 @@ cloudinary
 Pillow
 drf-spectacular
 python-dotenv
+gunicorn
 
 
 
